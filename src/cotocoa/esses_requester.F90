@@ -1,0 +1,94 @@
+module m_esses_requester
+    use allcom
+    use m_ctcamain
+    use m_esses
+
+#include "oh_stats.h"
+#define MCW local_comm
+
+    implicit none
+
+    private
+    public esses_requester_run
+
+contains
+
+    !> Run electric static simulation as requester.
+    subroutine esses_requester_run
+        integer(kind=4) :: ustep
+        integer(kind=4) :: mpierr
+        integer(kind=4) :: nprocs,myrank
+        integer(kind=8) :: mnmtotal = 0
+        integer(kind=8) :: mnmlocal = 0
+        real(kind=8) :: smltime, emltime
+        real(kind=8) :: performance
+
+        call CTCAR_init()
+        local_comm=CTCA_subcomm
+        call MPI_Comm_size(MPI_COMM_WORLD,nprocs,mpierr)
+        call MPI_Comm_rank(MPI_COMM_WORLD,myrank,mpierr)
+        call MPI_Comm_size(MCW, nnode, mpierr)
+        call MPI_Comm_rank(MCW, myid, mpierr)
+        call oh1_fam_comm(CTCA_subcomm)
+        call hdfinit()
+
+        emflag = 0
+        call input
+
+        call esses_initialize
+        print *, "es_re check 1"
+        call cotocoa_init
+        print *, "es_re check 2"
+
+        call MPI_Barrier(MCW, mpierr)
+        print *, "es_re check 3"
+        smltime = MPI_Wtime()
+        ! Main loop
+        do istep = 1, nstep
+            ! Update simulation time
+            t = t + dt
+            itime = istep
+
+            print *, "p_ustep", ustep
+
+            if (istep /= nstep) then
+                ustep = 2
+            else
+                ustep = 1
+            end if
+
+            print *, "a_ustep", ustep
+            print *, "es_re check 4"
+            print *, "myid", myid
+            if (myid == 0) then
+                write (6, *) '**** step --------- ', itime
+            end if
+
+            call esses_mainstep(ustep)
+
+            call cotocoa_mainstep
+
+            mnmlocal = mnmlocal + sum(totalp(:, :))
+        end do
+
+        call MPI_Barrier(MCW, mpierr)
+        emltime = MPI_Wtime()
+
+        call esses_finalize
+        call cotocoa_finalize
+
+        call MPI_Reduce(mnmlocal, mnmtotal, 1, &
+                        MPI_INTEGER8, MPI_SUM, 0, &
+                        MCW, mpierr)
+        if (myid == 0) then
+            print *, "time main loop", (emltime - smltime)
+            print *, "total N. of processed part.", mnmtotal
+
+            performance = dble(mnmtotal)/(emltime - smltime)*1.0d-6
+            print *, "performance   ", performance, "Mpart/s"
+        end if
+
+        call hdffinalize()
+        call CTCAR_finalize()
+    end subroutine
+end module

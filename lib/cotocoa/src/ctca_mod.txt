@@ -1,0 +1,57 @@
+ subroutine ctcar_writearea_real8(areaid, reqrank, offset, size, src)
+    implicit none
+    integer(kind=4) :: areaid, reqrank
+    class(*) :: offset, size
+    real(kind=8), dimension(*) :: src
+    integer(kind=8) :: offset64, size64
+
+    select type (size)
+       type is (integer(kind=4))
+          size64 = size
+       type is (integer(kind=8))
+          size64 = size
+       class default
+          print *, "Error : ctcar_writearea_real8 : wrong data type for size"
+    end select
+
+    select type (offset)
+       type is (integer(kind=4))
+          offset64 = offset
+       type is (integer(kind=8))
+          offset64 = offset
+       class default
+          print *, "Error : ctcar_writearea_real8 : wrong data type for offset"
+    end select
+
+    call ctcac_writearea_real8_f(areaid, reqrank, offset64, size64, src)
+
+ end subroutine ctcar_writearea_real8
+
+ subroutine ctcar_readarea_real8(areaid, reqrank, offset, size, dest)
+    implicit none
+    integer(kind=4) :: areaid, reqrank
+    class(*) :: offset, size
+    real(kind=8), dimension(*) :: dest
+    integer(kind=8) :: offset64, size64
+
+    select type (size)
+       type is (integer(kind=4))
+          size64 = size
+       type is (integer(kind=8))
+          size64 = size
+       class default
+          print *, "Error : ctcar_readarea_real8 : wrong data type for size"
+    end select
+
+    select type (offset)
+       type is (integer(kind=4))
+          offset64 = offset
+       type is (integer(kind=8))
+          offset64 = offset
+       class default
+          print *, "Error : ctcar_readarea_real8 : wrong data type for offset"
+    end select
+
+    ! ここでctcac_readarea_real8_fを呼ぶ
+    call ctcac_readarea_real8_f(areaid, reqrank, offset64, size64, dest)
+ end subroutine ctcar_readarea_real8

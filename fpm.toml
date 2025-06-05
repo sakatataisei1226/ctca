@@ -1,0 +1,32 @@
+name = "mpiemses3D"
+version = "0.7.0"
+license = ""
+author = "Nkzono99"
+maintainer = "j-nakazono@stu.kobe-u.ac.jp"
+copyright = "Nkzono99"
+
+[preprocess]
+[preprocess.cpp]
+macros = ["__VERSION__=\\'0.7.0\\'"]
+
+[build]
+auto-executables = false
+auto-tests = true
+auto-examples = true
+external-modules = ["mpi", "hdf5", "HDF5", "oh_type","ctca_mod", "ctca_f", "ctca"]
+link = ["hdf5_hl","hdf5", "hdf5_fortran",
+        "fftw3_mpi","fftw3", 
+        "mtarm", "psort", "ohhelp","ctca_mod", "ctca_f", "ctca"]
+
+[install]
+library = false
+
+[dependencies]
+futils = { git = "https://github.com/Nkzono99/futils" }
+finbound = { git = "https://github.com/Nkzono99/finbound" }
+mpifft-solver = { git = "https://github.com/Nkzono99/mpifft-solver.git" }
+
+[[executable]]
+name = "mpiemses3D"
+source-dir = "app"
+main = "main.F90"

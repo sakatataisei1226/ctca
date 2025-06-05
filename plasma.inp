@@ -1,0 +1,184 @@
+!!key dx=[0.5],to_c=[10000.0]
+&real
+/
+
+&realcv
+/
+
+&esorem
+    emflag = 0
+/
+
+&jobcon
+    jobnum(1:2) = 0, 1
+    nstep = 1000000
+/
+
+&digcon
+    hdfdigstart = 0
+    ifdiag = 100000
+    ijdiag = 100000
+    daverg = 1
+    ipahdf(1:3) = 0, 0, 0
+    ipadig(1:3) = 1024, 1024, 1024
+    ipaxyz = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    ifxyz(1:7) = 1, 1, 1, 1, 1, 1, 1
+    ijxyz(1:3) = 1, 1, 1
+    intfoc = 100
+/
+
+&plasma
+    wp(1:3) = 2.10390362104881, 0.04909886429062906, 2.10390362104881
+    wc = 0.0
+    cv = 10000.0
+    phiz = 0.0
+    phixy = 0.0
+/
+
+&tmgrid
+    ! Time width.
+    dt = 0.002
+
+    ! Number of grids.
+    nx = 32
+    ny = 32
+    nz = 256
+/
+
+&system
+    ! Number of grains (usually 1: electron, 2: ion, 3: photoelectron).
+    nspec = 3
+
+    ionchg = 0
+
+    nfbnd(1:3) = 0, 0, 1
+    npbnd = 0, 0, 2, 0, 0, 2, 0, 0, 2
+
+    mtd_vbnd(1:3) = 0, 0, 1
+/
+
+&intp
+    qm(1:3) = -1.0, 0.000544617021778308, -1.0
+    npin(1:3) = 5242880, 5242880, 0
+    path(1:3) = 44.237443494336965, 1.032370595764297, 20.749200214013655
+    peth(1:3) = 44.237443494336965, 1.032370595764297, 20.749200214013655
+    vdri(1:2) = -13.342563807926082, -13.342563807926082
+    vdthz(1:3) = 0.0, 0.0, 0.0
+    vdthxy(1:3) = 180.0, 180.0, 0.0
+    np(3) = 52428800
+/
+
+&inp
+    inpf(1:3) = 1, 1, 1
+    inpb(1:3) = 1, 1, 1
+    injct(1:3) = 1, 1, 1
+    npr(1:3) = 524288, 524288, 524288
+/
+
+&ptcond
+    ! Basic inner boundary type
+    ! boundary_type = "none"
+    boundary_type = "flat-surface"
+    ! boundary_type = "rectangle-hole"
+    ! boundary_type = "cylinder-hole"
+    ! boundary_type = "hyperboloid-hole"
+    ! boundary_type = "ellipsoid-hole"
+
+    ! Set "complex" and use boundary_types if you want to use multiple boundaries.
+    ! boundary_type = "complex"
+    ! boundary_types(1) = "flat-surface"
+    ! boundary_types(1) = "rectangle-hole"
+    ! boundary_types(1) = "cylinder-hole"
+    ! boundary_types(1) = "hyperboloid-hole"
+    ! boundary_types(1) = "ellipsoid-hole"
+
+    ! Z-coordinate of the ground surface (for "****-surface" and "****-hole").
+    zssurf = 60.0
+
+    ! Ratio of minimum radius to maximum radius (for "hyperboloid-hole")
+    rcurv = 0.5d0
+
+    ! For hole shape parameters (for "****-hole")
+    xlrechole(1:2) = 11.0, 11.0
+    xurechole(1:2) = 21.0, 21.0
+    ylrechole(1:2) = 11.0, 11.0
+    yurechole(1:2) = 21.0, 21.0
+    zlrechole(1:2) = 59.0, 20.0
+    zurechole(1:2) = 60.0, 59.0
+    
+    ! boundary_types(1) = "rectangle"
+    ! rectangle_shape(1, 1:6) = <xmin>, <xmax>, <ymin>, <ymax>, <zmin>, <zmax>
+
+    ! boundary_types(1) = "circlex" ! "circley" or "circlez"
+    ! circle_origin(1, 1:3) = <x>, <y>, <z>
+    ! circle_radius(1) = <radius>
+
+    ! boundary_types(1) = "cuboid"
+    ! cuboid_shape(1, 1:6) = <xmin>, <xmax>, <ymin>, <ymax>, <zmin>, <zmax>
+
+    ! boundary_types(1) = "diskz"
+    ! disk_origin(1, 1:3) = 16d0, 16d0, 60d0
+    ! disk_height(1) = 5d0
+    ! disk_radius(1) = 10d0
+    ! disk_inner_radius(1) = 6d0
+
+    ! For Other boundary
+    npc = 0
+    npcg = 0
+    pcgs(1) = 0
+    ccgs(1) = 0
+    mtd_vchg(1) = 0
+    modeww = -2
+/
+
+&scrnt
+/
+
+&emissn
+    ! Magnitude of the emitted charged particle current [A/m^2]
+    curf(3) = 829.3982816842599
+
+    ! Number of particle division for macroparticles.
+    dnsf(3) = 10
+
+    ! Set .true. if the photoemission surfaces is determined by raycasting.
+    ! If you want to specify them yourself, set it to .false. and do the settings below.
+    pe_ray_cast = .true.
+
+    ! Conventional parameter settings
+    ! nflag_emit(1:3) = 0, 0, 2
+    ! nepl(3) = 6
+    ! thetaz = 0.0
+    ! thetaxy = 180.0
+    ! imarea = 0.0, 0.0, 0.0
+    ! plreloc = 0.0
+    ! curf(3) = 829.3982816842599
+    ! zmine(1:5) = 60.0, 60.0, 60.0, 60.0, 20.0
+    ! zmaxe(1:5) = 60.0, 60.0, 60.0, 60.0, 20.0
+    ! nemd(1:5) = 3, 3, 3, 3, 3
+    ! xmine(1:5) = 0, 11.0, 21.0, 11.0, 11.0
+    ! xmaxe(1:5) = 11.0, 21.0, 32, 21.0, 21.0
+    ! ymine(1:5) = 0, 0, 0, 21.0, 11.0
+    ! ymaxe(1:5) = 32, 11.0, 32, 32, 21.0
+/
+
+! Settings for newly implemented particle insertion algorithm (Recommend false as it is not yet complete.).
+&pclinj
+    use_pinj = .false.
+/
+
+&dipole
+/
+
+&mpi
+    ! Number of node divisions (x, y, z).
+    nodes(1:3) = 2, 4, 32
+/
+
+&verbose
+/
+
+&gradema
+    ! Coefficient multiplied by the amount of charge flowing to the surface to accelerate the charging process.
+    grad_coef = 1.0
+/

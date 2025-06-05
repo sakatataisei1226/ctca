@@ -1,0 +1,3 @@
+[submodule "lib/cotocoa"]
+	path = lib/cotocoa
+	url = https://github.com/kmr-gks/cotocoa.git

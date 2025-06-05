@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "*.tcc": "cpp",
+        "functional": "cpp",
+        "limits": "cpp"
+    },
+    "fortran.linter.extraArgs": [
+        "-Wall",
+        "-I/opt/cray/pe/fftw/3.3.4.11/mic_knl/include",
+        "-I${workspaceFolder}/lib/ohhelp/ohhelp-1.1.1",
+        "-I${workspaceFolder}/build/dependencies/finbound/src",
+        "-I${workspaceFolder}/build/dependencies/finbound/src/boundary",
+        "-I${workspaceFolder}/build/dependencies/finbound/src/boundary/base",
+        "-I${workspaceFolder}/h5fortran-mpi/src/",
+    ],
+    "cmake.configureOnOpen": false,
+    "fortran.fortls.path": "fortls",
+    "fortran-ls.executablePath": "fortls",
+}
